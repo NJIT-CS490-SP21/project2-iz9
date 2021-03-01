@@ -12,7 +12,6 @@ function Main () {
   //const [index, setIndex] = useState(0);
   const [xIsNext, setXisNext] = useState(true); //whose turn it is (have an event)
   const winner = calculateWinner(board);
-  //const [xIsNext, setXisNext] = useState('X');
   
   //for login
   const [username, setUsername] = useState([]); //keeps track of users
@@ -20,42 +19,68 @@ function Main () {
   
   //for board showing
   const [isShown, setShown] = useState(false);
+  const [thisUser, setThisUser] = useState("");
+  //let spectators = undefined;
+  //let player2 = undefined;
+  //const [player, setPlayer] = useState([]);
+ // const [spect, setSpect] = useState([]);
+ // const isPlayer = onLoginButton();
+ let player1 = username[0];
+ let player2 = username[1];
+ let e;
+ let spectators = [];
+ for (e = 2; e < username.length; e++) {
+   spectators.push(username[e]);
+ }
+ 
+  
   
   //for updating board
   function squareClick(i) {
-    //const timeInBoard = board.slice(0, index + 1);
-    //const curr = timeInBoard[index];
-    //const squares = [...curr];
-    
-    //if (winner || squares[i]) return;
-    
-    // X or O
-    //squares[i] = 'X';
-    //squares[i] = xIsNext;
-    
-    //squares[i] = xIsNext ? 'X' : 'O';
-    //setBoard([...timeInBoard, squares]);
-   // setIndex(timeInBoard.length);
-   //setXisNext(!xIsNext);
-    
-    //var idx = squares.length;
-    //while (idx-- && !squares[idx]);
-
-    //console.log(idx);
-    //console.log(squares[idx]); // prints the value
 
     const boardCopy = [...board];
   	// If user click an occupied square or if game is won, return
-  	if (winner || boardCopy[i]) return;
+  	if (winner || boardCopy[i] ) return;
+  	
   	// Put an X or an O in the clicked square
-  	boardCopy[i] = xIsNext ? "X" : "O";
-  	setBoard(boardCopy);
-  	setXisNext(!xIsNext);
+  	//boardCopy[i] = xIsNext ? "X" : "O"; //this works
+  	//var player = xIsNext ? "X" : "O";
+  	//boardCopy[i] = player;
+  	console.log("---------------------");
+  	console.log(username);
+  	console.log(xIsNext);
+  	console.log(player1);
+  	console.log(board);
+  	console.log("---------------------");
+  	
+  	if (xIsNext && player1 == thisUser) {
+  	  console.log("Does it go here????");
+  	  boardCopy[i] = 'X';
+  	  setBoard(boardCopy);
+  	  setXisNext(!xIsNext); //this works
+  	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); //this works
+  	  //return null;
+  	}
+  	else if (!xIsNext && player2 == thisUser){
+  	  console.log("How ab here");
+  	  boardCopy[i] = 'O';
+  	  setBoard(boardCopy);
+  	  setXisNext(!xIsNext); //this works
+  	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); //this works
+  	  //return null;
+  	}
+  	
+ 
+  	  
   	
   	
   	
   	
-  	/*
+   
+    
+    //have another socket for turn
+    
+    	/*
   	let val = [...board];
   	if (val[i] === ""){
   	  if(xIsNext === 0){
@@ -72,14 +97,11 @@ function Main () {
   	}
     */
 
-    socket.emit('board', { squares: boardCopy, isX: xIsNext });
-    //socket.emit('board', { squares: val, isX: xIsNext });
-    
-    //have another socket for turn
-    
    
   };
   
+  
+  //THIS WORKS
   function onLoginButton() {
     const username = inputRef.current.value;
     if (username == ""){
@@ -90,12 +112,15 @@ function Main () {
       setShown((prevShown) => {
          return !prevShown;
     });
+    
+    setThisUser(username);
      
       setUsername(prevUsers => [...prevUsers, username]);
       socket.emit('join', { username: username });
     }
       
   };
+  
   
   function onShowHide(){
     
@@ -118,20 +143,10 @@ function Main () {
       // If the server sends a message (on behalf of another client), then we
       // add it to the list of messages to render it on the UI.
       
-     
       setXisNext(!data.isX);
       setBoard((prevBoard) => [...data.squares]);
      
       
-      /*
-      setBoard((prevBoard) => [...data.val]);
-      if(data.setXisNext === 1){
-        setXisNext(0);
-      }
-      else{
-        setXisNext(1);
-      }
-      */
       
       
     });
@@ -141,7 +156,23 @@ function Main () {
       console.log(data);
       // If the server sends a message (on behalf of another client), then we
       // add it to the list of messages to render it on the UI.
-      setUsername(prevUserList => [...prevUserList, data]);
+      
+      const lastItem = data[data.length - 1]
+      setUsername(prevUsers => [...prevUsers, lastItem]);
+      
+      const player1 = data[0];
+      const player2 = data[1];
+      var i;
+      var spectators = [];
+      for (i = 2; i < data.length; i++) {
+        spectators.push(data[i]);
+      }
+      console.log(player1);
+      console.log(player2);
+      console.log(spectators);
+      
+      
+      //setUsername(prevUserList => [...prevUserList, data]);
       
       //console.log('User logged in!');
      // console.log(data);
@@ -150,7 +181,7 @@ function Main () {
      // const player2 = data[1];
       //var i;
       //var spectators = "";
-      //for (i = 3; i < data.length; i++) {
+      //for (i = 2; i < data.length; i++) {
       //  spectators += data[i] + " ";
       //}
       
@@ -176,12 +207,7 @@ function Main () {
         //setXisNext(xIsNext);
      // }
       //if (player2){
-      //  const timeInBoard = board.slice(0, index + 1);
-      //  const curr = timeInBoard[index];
-      //  const squares = [...curr];
-        
-       // if (winner || squares[i]) return;
-        
+    
         // X or O
         //squares[i] = 'X';
         //squares[i] = xIsNext;
@@ -202,9 +228,7 @@ function Main () {
       //setXisNext(!xIsNext);
       
     }) ;
-    
-  
-    
+
   }, []);
   
   

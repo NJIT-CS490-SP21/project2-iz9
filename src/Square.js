@@ -1,16 +1,9 @@
 import React from 'react';
-
-const styles = {
-  background: '#f1d8f0',
-  border: '2px solid #e93576',
-  cursor: 'pointer',
-  outline: 'none',
-  fontSize: '35px'
-};
+import './Main.css';
 
 function Square ({ value, onClick }) {
   return (
-  <button style={styles} onClick={onClick}>
+  <button class="squareBtn" onClick={onClick}>
     {value}
   </button>
   );

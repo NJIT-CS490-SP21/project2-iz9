@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { calculateWinner } from './helpers';
 import Board from './Board';
+import './Main.css';
 import io from 'socket.io-client';
 
 const socket = io(); // Connects to socket connection io()
@@ -21,16 +22,9 @@ function Main () {
   const [isShown, setShown] = useState(false);
   const [thisUser, setThisUser] = useState("");
   
- let player1 = username[0];
- let player2 = username[1];
- let e;
- let spectators = [];
- for (e = 2; e < username.length; e++) {
-   spectators.push(username[e]);
- }
+  let player1 = username[0];
+  let player2 = username[1];
  
-  
-  
   //for updating board
   function squareClick(i) {
 
@@ -41,7 +35,6 @@ function Main () {
   	// Put an X or an O in the clicked square
   	//boardCopy[i] = xIsNext ? "X" : "O"; //this works
   	//var player = xIsNext ? "X" : "O";
-  	//boardCopy[i] = player;
   	console.log("---------------------");
   	console.log(username);
   	console.log(xIsNext);
@@ -53,45 +46,16 @@ function Main () {
   	  console.log("Does it go here????");
   	  boardCopy[i] = 'X';
   	  setBoard(boardCopy);
-  	  setXisNext(!xIsNext); //this works
+  	  setXisNext(!xIsNext); 
   	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); 
   	}
   	else if (!xIsNext && player2 == thisUser){
   	  console.log("How ab here");
   	  boardCopy[i] = 'O';
   	  setBoard(boardCopy);
-  	  setXisNext(!xIsNext); //this works
+  	  setXisNext(!xIsNext); 
   	  socket.emit('board', { squares: boardCopy, isX: xIsNext });
   	}
-  	
- 
-  	  
-  	
-  	
-  	
-  	
-   
-    
-    //have another socket for turn
-    
-    	/*
-  	let val = [...board];
-  	if (val[i] === ""){
-  	  if(xIsNext === 0){
-  	    val[i] = "X";
-  	    setXisNext(1);
-  	    
-  	  }
-  	  else{
-  	    val[i] = "O";
-  	    setXisNext(0);
-  	  }
-  	  setBoard(val);
-  	  socket.emit('board', { squares: val, isX: xIsNext })
-  	}
-    */
-
-   
   };
   
   
@@ -107,12 +71,11 @@ function Main () {
          return !prevShown;
     });
     
-    setThisUser(username);
-     
-      setUsername(prevUsers => [...prevUsers, username]);
-      socket.emit('join', { username: username });
+    setThisUser(username); //this line doesnt add 3rd browser
+    setUsername(prevUsers => [...prevUsers, username]);
+    socket.emit('join', { username: username });
+    
     }
-      
   };
   
   
@@ -121,17 +84,20 @@ function Main () {
   }
   
   function restartButton(){
-    console.log("UHHHHHHHHHHHHHHHH");
     setBoard(Array(9).fill(null));
     socket.emit('reset', []);
-    document.getElementById("ResetButton");
+    //document.getElementById("ResetButton");
     
   }
   
+  //IDK NOT NEEDED
+  /*
   const jumpTo = step => {
     //setIndex(step);
     setXisNext(step % 2 === 0);
   };
+  */
+  
   
   // The function inside useEffect is only run whenever any variable in the array
   // (passed as the second arg to useEffect) changes. Since this array is empty
@@ -147,17 +113,15 @@ function Main () {
       
       setXisNext(!data.isX);
       setBoard((prevBoard) => [...data.squares]);
-     
-      
-      
-      
     });
     
     /*
     socket.on('reset', (data) => {
-      setU
+      //setBoard(prev => data);
+      winner ? console.log(winner, " won") : console.log("No winner yet!");
     })
     */
+    
     
     socket.on('join', (data) => {
       console.log('User list received!');
@@ -168,6 +132,8 @@ function Main () {
       const lastItem = data[data.length - 1]
       setUsername(prevUsers => [...prevUsers, lastItem]);
       
+      //THIS WORKS
+      /*
       const player1 = data[0];
       const player2 = data[1];
       var i;
@@ -178,7 +144,7 @@ function Main () {
       console.log(player1);
       console.log(player2);
       console.log(spectators);
-      
+      */
       
       //setUsername(prevUserList => [...prevUserList, data]);
       
@@ -241,41 +207,65 @@ function Main () {
   
   
   
+  
+  
   return (
           <>
           <h1>Tic Tac Toe</h1>
           
           
           <div>
-          Enter your username here: <input ref={inputRef} type="text" />
-          <button onClick={() => {
+          <div class="centerInput">
+          Enter your username: <input ref={inputRef} type="text" />
+          <button class="logBtn" onClick={() => {
                                     onLoginButton();
                                     onShowHide();
           }}>Log In</button>
+          </div>
           
             <div>
+            
+            
+            {isShown === true ? (
+            <div>
+            <div><Board squares={board} onClick={squareClick} /> </div>
+          
+            <div class="playerStyle">
+            {winner ? 'Winner: ' + winner : 'Next Player: ' + (xIsNext ? 'X' : 'O')}
+            </div>
+            
+            </div> ) : ("Can't Show Board. You need to log in first!")}
+            
+            
+            {winner == "X" || winner == "O" ? (
+              <div class="restartBtnCenter"><button class="restartBtn" onClick={()=>restartButton()}>Restart</button></div>
+            ) : ("")}
+            
+            
+            
+            
             <p>Logged in Users:</p>
             {username.map((item) => ( <li>{item}</li>))}
+            
+            <div class="centerPlayers">
+            <div class="playerDisplay"><p class="txt">Player X: {username[0]}</p></div>
+            <div class="playerDisplay"><p class="txt">Player O: {username[1]}</p></div>
+            <div class="playerDisplay"><p class="txt">Spectators: { username.slice(2).join(", ") }</p></div>
+            </div>
+            
             </div>
             
           </div>
           
-          <div><button id="ResetButton" class="ResetButton" onClick={restartButton}>Restart</button></div>
           
-          {isShown === true ? (
-            <div>
-            <div><Board squares={board} onClick={squareClick} /> </div>
           
-            <div>
-            {winner ? 'Winner: ' + winner : 'Next Player: ' + (xIsNext ? 'X' : 'O')}
-            
-            </div></div> ) : ("Can't Show Board. You need to log in first!")}
-            
-            
             
           
           </>
   );
+  
+  
+  
 }
 
 export default Main;

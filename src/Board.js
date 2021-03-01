@@ -2,10 +2,10 @@ import React from 'react';
 import Square from './Square';
 
 const style = {
-  border: '2px solid pink',
+  //border: '2px solid gray',
   borderRadius: '10px',
-  width: '250px',
-  height: '250px',
+  width: '280px',
+  height: '280px',
   margin: '0 auto',
   display: 'grid',
   gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)'

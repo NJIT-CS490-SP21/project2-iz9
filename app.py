@@ -43,6 +43,12 @@ def on_chat(data): # data is whatever arg you pass in your emit call on client
     # the client that emmitted the event that triggered this function
     socketio.emit('board',  data, broadcast=True, include_self=False)
 
+@socketio.on('reset')
+def on_reset(data): # data is whatever arg you pass in your emit call on client
+    print(str(data))
+    # This emits the 'chat' event from the server to all clients except for
+    # the client that emmitted the event that triggered this function
+    socketio.emit('reset',  data, broadcast=True, include_self=False)
 
 @socketio.on('join')
 def on_join(data): # data is whatever arg you pass in your emit call on client

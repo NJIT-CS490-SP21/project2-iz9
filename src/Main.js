@@ -20,11 +20,7 @@ function Main () {
   //for board showing
   const [isShown, setShown] = useState(false);
   const [thisUser, setThisUser] = useState("");
-  //let spectators = undefined;
-  //let player2 = undefined;
-  //const [player, setPlayer] = useState([]);
- // const [spect, setSpect] = useState([]);
- // const isPlayer = onLoginButton();
+  
  let player1 = username[0];
  let player2 = username[1];
  let e;
@@ -58,16 +54,14 @@ function Main () {
   	  boardCopy[i] = 'X';
   	  setBoard(boardCopy);
   	  setXisNext(!xIsNext); //this works
-  	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); //this works
-  	  //return null;
+  	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); 
   	}
   	else if (!xIsNext && player2 == thisUser){
   	  console.log("How ab here");
   	  boardCopy[i] = 'O';
   	  setBoard(boardCopy);
   	  setXisNext(!xIsNext); //this works
-  	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); //this works
-  	  //return null;
+  	  socket.emit('board', { squares: boardCopy, isX: xIsNext });
   	}
   	
  
@@ -126,6 +120,14 @@ function Main () {
     
   }
   
+  function restartButton(){
+    console.log("UHHHHHHHHHHHHHHHH");
+    setBoard(Array(9).fill(null));
+    socket.emit('reset', []);
+    document.getElementById("ResetButton");
+    
+  }
+  
   const jumpTo = step => {
     //setIndex(step);
     setXisNext(step % 2 === 0);
@@ -150,6 +152,12 @@ function Main () {
       
       
     });
+    
+    /*
+    socket.on('reset', (data) => {
+      setU
+    })
+    */
     
     socket.on('join', (data) => {
       console.log('User list received!');
@@ -227,7 +235,7 @@ function Main () {
       //squares[i] = xIsNext ? 'X' : 'O';
       //setXisNext(!xIsNext);
       
-    }) ;
+    });
 
   }, []);
   
@@ -252,6 +260,8 @@ function Main () {
             
           </div>
           
+          <div><button id="ResetButton" class="ResetButton" onClick={restartButton}>Restart</button></div>
+          
           {isShown === true ? (
             <div>
             <div><Board squares={board} onClick={squareClick} /> </div>
@@ -260,6 +270,9 @@ function Main () {
             {winner ? 'Winner: ' + winner : 'Next Player: ' + (xIsNext ? 'X' : 'O')}
             
             </div></div> ) : ("Can't Show Board. You need to log in first!")}
+            
+            
+            
           
           </>
   );

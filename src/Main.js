@@ -86,7 +86,7 @@ function Main () {
   function restartButton(){
     setBoard(Array(9).fill(null));
     socket.emit('reset', []);
-    //document.getElementById("ResetButton");
+    document.getElementById("ResetButton");
     
   }
   
@@ -248,9 +248,9 @@ function Main () {
             {username.map((item) => ( <li>{item}</li>))}
             
             <div class="centerPlayers">
-            <div class="playerDisplay"><p class="txt">Player X: {username[0]}</p></div>
-            <div class="playerDisplay"><p class="txt">Player O: {username[1]}</p></div>
-            <div class="playerDisplay"><p class="txt">Spectators: { username.slice(2).join(", ") }</p></div>
+            <div class="playerDisplay"><p class="txt">Player X: <br /> {username[0]}</p></div>
+            <div class="playerDisplay"><p class="txt">Player O: <br /> {username[1]}</p></div>
+            <div class="playerDisplay"><p class="txt">Spectators: <br /> { username.slice(2).join(", ") }</p></div>
             </div>
             
             </div>

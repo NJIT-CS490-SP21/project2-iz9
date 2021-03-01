@@ -64,8 +64,10 @@ body{
 }
 .playerDisplay{
     display: inline-block;
-    padding-right: 50px;
+    
     text-align:center;
+    margin: 0 50px 0 50px;
+ 
 }
 
 .playerDisplay p{
@@ -83,3 +85,8 @@ body{
     outline: none;
     font-size: 35px;
 }
+
+.squareBtn:hover{
+ background: #b67edf;
+}
+

@@ -20,7 +20,8 @@ function Main () {
   
   //for board showing
   const [isShown, setShown] = useState(false);
-  const [thisUser, setThisUser] = useState("");
+  //const [thisUser, setThisUser] = useState(""); //this works
+  const [thisUser, setThisUser] = useState();
   
   let player1 = username[0];
   let player2 = username[1];
@@ -71,7 +72,8 @@ function Main () {
          return !prevShown;
     });
     
-    setThisUser(username); //this line doesnt add 3rd browser
+    //setThisUser(username);  //this works
+    setThisUser((prevUser) => username);
     setUsername(prevUsers => [...prevUsers, username]);
     socket.emit('join', { username: username });
     
@@ -86,7 +88,7 @@ function Main () {
   
   function restartButton(){
     setBoard(Array(9).fill(null));
-    socket.emit('reset', []);
+    socket.emit('reset', Array(9).fill(null));
     document.getElementById("ResetButton");
     
   }
@@ -120,12 +122,11 @@ function Main () {
       setBoard((prevBoard) => [...data.squares]);
     });
     
-    /*
+    
     socket.on('reset', (data) => {
-      //setBoard(prev => data);
-      winner ? console.log(winner, " won") : console.log("No winner yet!");
+      setBoard(prev => data);
     })
-    */
+    
     
     
     socket.on('join', (data) => {
@@ -210,6 +211,8 @@ function Main () {
 
   }, []);
   
+  
+  
   const boardIsFull = board.every(element => element !== null);
   console.log(boardIsFull); //true if board is full
   
@@ -242,15 +245,10 @@ function Main () {
             
            
             
-            { (winner == "X") || (winner == "O") || (  (winner != "X" || winner != "O") && boardIsFull )  ? (
+            { ( (winner == "X" || winner == "O") && (thisUser ==  username[0] || thisUser ==  username[1]) ) ||
+            ( (winner != "X" || winner != "O") && (thisUser == username[0] || thisUser == username[1]) && boardIsFull)  ? (
               <div class="restartBtnCenter"><button class="restartBtn" onClick={()=>restartButton()}>Restart</button></div>
             ) : ("")}
-            
-            
-            
-            
-            <p>Logged in Users:</p>
-            {username.map((item) => ( <li>{item}</li>))}
             
             <div class="centerPlayers">
             <div class="playerDisplay"><p class="txt">Player X: <br /> {username[0]}</p></div>

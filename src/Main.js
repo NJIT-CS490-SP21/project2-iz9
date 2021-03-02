@@ -76,7 +76,7 @@ function Main () {
     setThisUser((prevUser) => username);
     setUsername(prevUsers => [...prevUsers, username]);
     socket.emit('join', { username: username });
-    
+    document.getElementById("logBtn").disabled = true; //button can be clicked only once
     }
   };
   
@@ -90,7 +90,6 @@ function Main () {
     setBoard(Array(9).fill(null));
     socket.emit('reset', Array(9).fill(null));
     document.getElementById("ResetButton");
-    
   }
  
   
@@ -224,7 +223,7 @@ function Main () {
           <div>
           <div class="centerInput">
           Enter your username: <input ref={inputRef} type="text" />
-          <button class="logBtn" onClick={() => {
+          <button class="logBtn" id="logBtn" onClick={() => {
                                     onLoginButton();
                                     onShowHide();
           }}>Log In</button>
@@ -241,7 +240,7 @@ function Main () {
             {winner ? 'Winner: ' + winner : 'Next Player: ' + (xIsNext ? 'X' : 'O')}
             </div>
             
-            </div> ) : ("Can't Show Board. You need to log in first!")}
+            </div> ) : (<p class="txt">Can't Show Board. You need to log in first!</p>)}
             
            
             
@@ -251,9 +250,9 @@ function Main () {
             ) : ("")}
             
             <div class="centerPlayers">
-            <div class="playerDisplay"><p class="txt">Player X: <br /> {username[0]}</p></div>
-            <div class="playerDisplay"><p class="txt">Player O: <br /> {username[1]}</p></div>
-            <div class="playerDisplay"><p class="txt">Spectators: <br /> { username.slice(2).join(", ") }</p></div>
+            <div class="playerDisplay"><p>Player X: <br /> {username[0]}</p></div>
+            <div class="playerDisplay"><p>Player O: <br /> {username[1]}</p></div>
+            <div class="playerDisplay"><p>Spectators: <br /> { username.slice(2).join(", ") }</p></div>
             </div>
             
             </div>

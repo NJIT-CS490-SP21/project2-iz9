@@ -1,20 +1,11 @@
 import React from 'react';
 import Square from './Square';
-
-const style = {
-  //border: '2px solid gray',
-  borderRadius: '10px',
-  width: '280px',
-  height: '280px',
-  margin: '0 auto',
-  display: 'grid',
-  gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)'
-};
+import './Main.css';
 
 function Board ({ squares, onClick }) {
     
   return (
-  <div style={style}>
+  <div class="boardStyle">
     {squares.map((square, i) => (
       <Square key={i} value={square} onClick={() => onClick(i)} />
     ))}

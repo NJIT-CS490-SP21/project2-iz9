@@ -83,12 +83,17 @@ function Main () {
     
   }
   
+  
   function restartButton(){
     setBoard(Array(9).fill(null));
     socket.emit('reset', []);
     document.getElementById("ResetButton");
     
   }
+ 
+  
+
+
   
   //IDK NOT NEEDED
   /*
@@ -205,9 +210,8 @@ function Main () {
 
   }, []);
   
-  
-  
-  
+  const boardIsFull = board.every(element => element !== null);
+  console.log(boardIsFull); //true if board is full
   
   return (
           <>
@@ -236,8 +240,9 @@ function Main () {
             
             </div> ) : ("Can't Show Board. You need to log in first!")}
             
+           
             
-            {winner == "X" || winner == "O" ? (
+            { (winner == "X") || (winner == "O") || (  (winner != "X" || winner != "O") && boardIsFull )  ? (
               <div class="restartBtnCenter"><button class="restartBtn" onClick={()=>restartButton()}>Restart</button></div>
             ) : ("")}
             

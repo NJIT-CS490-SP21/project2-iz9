@@ -69,8 +69,7 @@ def on_join(data): # data is whatever arg you pass in your emit call on client
         print(str(usersLogged[1]) + " is player 2")
     else:
         spectator = data["username"]
-        #print(str(data["username"]) + " is spectator")
-        print(str(usersLogged[3]) + " is spectator")
+        
     
     #send back data from server to client telling the users what role they are, based on that decide who can make a move or not
     #client needs to know what player they are

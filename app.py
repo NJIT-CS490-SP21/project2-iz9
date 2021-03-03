@@ -1,6 +1,6 @@
 import os
-from flask import Flask, send_from_directory, json, session
-from flask_socketio import SocketIO
+from flask import Flask, send_from_directory, json, session, jsonify
+from flask_socketio import SocketIO, send
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder='./build/static')
@@ -67,6 +67,12 @@ def on_join(data): # data is whatever arg you pass in your emit call on client
         spectator = data["username"]
         
     socketio.emit('join', usersLogged, broadcast=True, include_self=False)
+    
+@socketio.on("message")
+def on_message(msg):
+    print(msg)
+    send(msg, broadcast=True)
+    return None
 
 # Note that we don't call app.run anymore. We call socketio.run with app arg
 socketio.run(

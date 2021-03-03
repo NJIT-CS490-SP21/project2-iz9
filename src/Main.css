@@ -64,7 +64,7 @@ body{
 }
 .playerDisplay{
     display: inline-block;
-    text-align:center;
+    text-align: center;
     margin: 0 50px 0 50px;
  
 }
@@ -104,4 +104,47 @@ body{
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     margin-top:30px;
+}
+
+/*Chat Style*/
+.sideBySide{
+    display: inline-block;
+    margin: 0 50px 0 50px;
+    width:50%;
+}
+.full {
+  display:table;
+  width: 100%;
+}
+.left, .right {
+  display: table-cell;
+}
+.left{
+    background: white;
+    text-align:center;
+    width:30%;
+    height: 500px;
+    border-radius: 25px;
+}
+.right{
+    width:70%;
+}
+.chatBtn{
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    background: #8d4abe;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin: 0px 0px 0 30px;
+}
+.msg{
+	background: lightblue;
+	border-radius: 25px;
+ 
 }

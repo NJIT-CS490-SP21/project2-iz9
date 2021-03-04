@@ -25,6 +25,9 @@ const Main = () => {
   const [messages, setMessages] = useState([""]);
   const [message, setMessage] = useState("");
   
+  //for leaderboard
+  const [isLeadShown, setLeadShown] = useState(false);
+  
   //to keep sending messages 
   useEffect(() => {
     getMessages();
@@ -154,6 +157,14 @@ const Main = () => {
     }
   }
   
+  
+  const LeaderboardBtn = () => {
+    setLeadShown((prevShown) => {
+      return !prevShown;
+    });
+    
+  }
+  
   useEffect(() => {
     // Listening for an event emitted by the server. If received, we
     // run the code in the function that is passed in as the second arg
@@ -238,6 +249,28 @@ const Main = () => {
           
           </div>
         </div>
+        
+        <div class="leaderTable">
+        <button class="LeaderboardBtn" id="LeaderboardBtn" onClick={() => {LeaderboardBtn();}}>View Leaderboard</button>
+        </div>
+        
+        {isLeadShown === true ? (
+            <div class="leaderTable">
+            
+            <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Leadership Board</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Username</td>
+                    <td>Score</td>
+                </tr>
+            </tbody>
+            </table>
+            </div> ) : (<p></p>)}
       </div>
     </div>
   </>

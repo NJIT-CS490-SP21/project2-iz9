@@ -2,8 +2,32 @@ import os
 from flask import Flask, send_from_directory, json, session, jsonify
 from flask_socketio import SocketIO, send
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv, find_dotenv
+
+
+load_dotenv(find_dotenv()) # This is to load your env variables from .env
 
 app = Flask(__name__, static_folder='./build/static')
+
+# Point SQLAlchemy to your Heroku database
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+# Gets rid of a warning
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+# IMPORTANT: This must be AFTER creating db variable to prevent
+# circular import issues
+#import models
+#User=models.define_user_class(db)
+#x=User(username ='wow')
+#print(x)
+
+import models
+User=models.define_user_class(db)
+x=User(username='username')
+print(x)  #<User 'username'>
 
 i=0;
 usersLogged=[]
@@ -28,6 +52,7 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+   
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')

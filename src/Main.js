@@ -116,7 +116,44 @@ const Main = () => {
     document.getElementById("restartBtn");
   }
   
+  function thereIsWinner(){
+    if (winner == "X" || winner == "O"){
+      return true;
+    }
+  }
+  
+  function thereisNoWinner(){
+    if (winner != "X" || winner != "O"){
+      return true;
+    }
+  }
+  
+  function thereIsUser(){
+    if (thisUser ==  username[0] || thisUser ==  username[1]) {
+      if(thisUser ==  username[0]){
+        let status = "Winner: " + username[0]; 
+        //console.log("I am player 1");
+      }
+      else if (thisUser == username[1]){
+        let status = "Winner: " + username[1];
+      }
+      return true;
+    }
+  }
+ 
+  function BoardFull(){
+    if (board.every(element => element !== null)) {
+      return true;
+    }
+  }
 
+  function showRestartButton(){
+    if ( (thereIsWinner() && thereIsUser() ) || ( thereisNoWinner() && thereIsUser() && BoardFull() ) ){
+      return true;
+      console.log("Show the button");
+    }
+  }
+  
   useEffect(() => {
     // Listening for an event emitted by the server. If received, we
     // run the code in the function that is passed in as the second arg
@@ -145,8 +182,8 @@ const Main = () => {
   }, []);
   
   
-  const boardIsFull = board.every(element => element !== null);
-  console.log(boardIsFull); //true if board is full
+  //const boardIsFull = board.every(element => element !== null);
+  //console.log(boardIsFull); //true if board is full
   
   return (
     <>
@@ -184,16 +221,15 @@ const Main = () => {
           
             { ( (winner == "O")) ? (
             <p>Winner Username: {username[1]} </p>) : ("")}
-          
-            { ((winner != "X" || winner != "O") && boardIsFull) ? (
+            
+            { thereisNoWinner() && BoardFull() ? (
             <p>Draw Game!</p>) : ("")}
             </div>
-          
-            { ((winner == "X" || winner == "O") && (thisUser ==  username[0] || thisUser ==  username[1]) ) ||
-            ((winner != "X" || winner != "O") && (thisUser == username[0] || thisUser == username[1]) && boardIsFull)  ? (
+            
+            { showRestartButton() ? (
             <div class="restartBtnCenter"><button id="restartBtn" class="restartBtn" onClick={()=>restartButton()}>Restart</button></div>
             ) : ("") }
-         
+          
             <div class="centerPlayers">
               <div class="playerDisplay"><p>Player X: <br /> {username[0]}</p></div>
               <div class="playerDisplay"><p>Player O: <br /> {username[1]}</p></div>

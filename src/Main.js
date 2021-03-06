@@ -118,22 +118,6 @@ const Main = () => {
     }
   };
   
-  /*
-  // button
-  var element = document.getElementById('LeaderboardBtn'); // grab a reference to your element
-  if(element){
-    element.addEventListener('click', clickHandler);
-  }
-  
-  var elementIsClicked = false; // declare the variable that tracks the state
-  function clickHandler(){ // declare a function that updates the state
-  console.log('inside handleclick');
-    elementIsClicked = true;
-    //winner_loser();
-  }
-  */
-
-
   const restartButton = () => {
     //  elementIsClicked = true;
     setBoard(Array(9).fill(null));
@@ -181,9 +165,14 @@ const Main = () => {
       //console.log("Show the button");
     }
   }
-
-
   
+  function ifGameEnds(){
+    if (thereIsWinner() || BoardFull() ) {
+      //console.log("inside game ends");
+      socket.emit('game_ends');
+    }
+  }
+  ifGameEnds();
   
   const LeaderboardBtn = () => {
     socket.emit('showBoardData');
@@ -196,10 +185,16 @@ const Main = () => {
     winner_loser();
     socket.emit('showBoardData');
   }
-  
 
-  
-  
+  function winner_loser(){
+    if ( (winner === 'X') && (player1 === thisUser) ){
+      ( socket.emit('updateScore', { winner: player1, loser: player2}) );
+    }
+    else if ( (winner === 'O') && (player2 === thisUser) ){
+      ( socket.emit('updateScore', {winner: player2, loser: player1}) );
+    }
+  }
+
   useEffect(() => {
     
     socket.on('board', (data) => {
@@ -213,7 +208,6 @@ const Main = () => {
     socket.on('reset', (data) => {
       setBoard(prev => data);
     })
-    
     
     socket.on('join', (data) => {
       //console.log('User list received!');
@@ -232,15 +226,31 @@ const Main = () => {
       
       setLeaderboardData(data.users); //array of users
       setScore(data.score); //array of scores
+      //console.log(data.score); //p
+      //let newArr = data.users;
+      //console.log(newArr.indexOf('y')); //prints the index
+      //let idx = newArr.indexOf('y');
+     // let scoreArr = data.score;
+      //console.log(scoreArr[idx]);
+      //scoreArr[idx];
+    });
+   
+    socket.on('updateScore', (data) => {
+      console.log(data.score + " SCOREEEEEE");
+      setLeaderboardData(data.users); //array of users
+      setScore(data.score); //array of scores
     });
     
-   
-    
     socket.on('showBoardData', (data) => {
-     
       setLeaderboardData(data.users); //array of users
       setScore(data.score); //array of scores
     
+    });
+    
+    socket.on('game_ends', (data) => {
+      setLeaderboardData(data.users); //array of users
+      setScore(data.score); //array of scores
+
     });
 
 

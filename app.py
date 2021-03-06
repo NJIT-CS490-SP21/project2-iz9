@@ -114,6 +114,19 @@ def on_join_board(data):
         users.append(currentUsername)
         socketio.emit('user_list', {'users': users, 'score' : scores})
 
+@socketio.on("updateScore")
+def on_winner(data):
+    
+    winner = db.session.query(models.Users).get(data['winner'])
+    winner.score = winner.score + 1
+    db.session.commit()
+    
+    loser = db.session.query(models.Users).get(data['loser'])
+    loser.score = loser.score - 1
+    db.session.commit()
+    
+    users, scores = DBdata()
+    socketio.emit('updateScore', {'users': users, 'score': scores})
 
 @socketio.on("showBoardData")
 def on_showBoardData():
@@ -122,6 +135,11 @@ def on_showBoardData():
     #print('Scores from DB: {}'.format(scores))
     socketio.emit('showBoardData', {'users': users, 'score': scores})
  
+
+@socketio.on("game_ends")
+def on_game_ends():
+    users, scores = DBdata();
+    socketio.emit('game_ends', {'users': users, 'score': scores})
 
 def DBdata():
     users = []

@@ -25,13 +25,14 @@ db = SQLAlchemy(app)
 #print(x)
 
 import models
-User=models.define_user_class(db)
-x=User(username='username')
-print(x)  #<User 'username'>
+#User=models.define_user_class(db)
+#x=User(username='username')
+#print(x)  #<User 'username'>
 
-i=0;
-usersLogged=[]
-player1=player2=spectator=""
+
+i = 0
+usersLogged = []
+player1 = player2 = spectator = ""
 
 #Flask socket IO documentation
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -48,46 +49,45 @@ socketio = SocketIO(
 def index(filename):
     return send_from_directory('./build', filename)
 
-# When a client connects from this Socket connection, this function is run
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
-   
+    #all_people = models.User.query.all()
+    #users = []
+    #for person in all_people:
+    #    users.append(person.username)
+    #print(users)
+    #socketio.emit('user_list', {'users': users})
 
-# When a client disconnects from this Socket connection, this function is run
+
 @socketio.on('disconnect')
 def on_disconnect():
     print('User disconnected!')
 
-# When a client emits the event 'board' to the server, this function is run
-# 'board' is a custom event name that we just decided
 @socketio.on('board')
 def on_board(data): # data is whatever arg you pass in your emit call on client
-    print(str(data))
-    # This emits the 'board' event from the server to all clients except for
-    # the client that emmitted the event that triggered this function
-    socketio.emit('board',  data, broadcast=True, include_self=False)
+    #print(str(data))
+    socketio.emit('board', data, broadcast=True, include_self=False)
 
 @socketio.on('reset')
 def on_reset(data):
-    print(str(data)) 
-    socketio.emit('reset',  data, broadcast=True, include_self=False)
+    socketio.emit('reset', data, broadcast=True, include_self=False)
 
 @socketio.on('join')
 def on_join(data): # data is whatever arg you pass in your emit call on client
     print(str(data)) # prints {'username': 'name'}
     global i, usersLogged #tracks users and appends when a user logs in
-    global player1,player2,spectator
-    i+=1
+    global player1, player2, spectator
+    i += 1
     usersLogged.append(data["username"])
-    if (len(usersLogged) == 1):
+    if len(usersLogged) == 1:
         player1 = data["username"]
         #print(str(data["username"]) + " is player 1")
-        print(str(usersLogged[0]) + " is player 1")
-    elif (len(usersLogged) == 2):
+       # print(str(usersLogged[0]) + " is player 1")
+    elif len(usersLogged) == 2:
         player2 = data["username"]
         #print(str(data["username"]) + " is player 2")
-        print(str(usersLogged[1]) + " is player 2")
+        #print(str(usersLogged[1]) + " is player 2")
     else:
         spectator = data["username"]
         
@@ -99,9 +99,22 @@ def on_message(msg):
     send(msg, broadcast=True)
     return None
 
+def DBdata():
+    users = []
+    scores = []
+    all_people = models.Users.query.all() 
+    for person in all_people:
+        users.append(person.username)
+        scores.append(person.score)
+    return users, scores
+    
+    
+if __name__ == "__main__":
+    db.create_all()
 # Note that we don't call app.run anymore. We call socketio.run with app arg
-socketio.run(
-    app,
-    host=os.getenv('IP', '0.0.0.0'),
-    port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
-)
+    socketio.run(
+        app,
+        host=os.getenv('IP', '0.0.0.0'),
+        port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
+    )
+    

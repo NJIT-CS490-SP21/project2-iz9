@@ -106,7 +106,7 @@ def on_join_board(data):
     currentUsername = data['username']
     
     if currentUsername in users:
-        print("Welcome back {}".format(currentUsername))
+        print("This User exists {}".format(currentUsername))
     else:
         new_user = models.Users(username=data['username'], score=100)   #{'username': 'name', 'score': 100}
         db.session.add(new_user)

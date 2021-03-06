@@ -212,27 +212,18 @@ const Main = () => {
     socket.on('join', (data) => {
       //console.log('User list received!');
       //console.log(data);
-
       const lastItem = data[data.length - 1]
       setUsername(prevUsers => [...prevUsers, lastItem]);
     });
     
     //sends object key username and value array of names
     //key score and value array of scores
-    //this prints twice too problem
     socket.on('user_list', (data) => {
       console.log('User list received!');
       console.log(data);
       
       setLeaderboardData(data.users); //array of users
       setScore(data.score); //array of scores
-      //console.log(data.score); //p
-      //let newArr = data.users;
-      //console.log(newArr.indexOf('y')); //prints the index
-      //let idx = newArr.indexOf('y');
-     // let scoreArr = data.score;
-      //console.log(scoreArr[idx]);
-      //scoreArr[idx];
     });
    
     socket.on('updateScore', (data) => {
@@ -250,13 +241,11 @@ const Main = () => {
     socket.on('game_ends', (data) => {
       setLeaderboardData(data.users); //array of users
       setScore(data.score); //array of scores
-
     });
 
 
   }, []);
   
-
   return (
     <>
     <div class="full">

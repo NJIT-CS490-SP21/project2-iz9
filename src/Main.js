@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { calculateWinner } from './helpers';
+import { ListItem } from './ListItem';
 import Board from './Board';
 import './Main.css';
 import io from 'socket.io-client';
@@ -27,6 +28,8 @@ const Main = () => {
   
   //for leaderboard
   const [isLeadShown, setLeadShown] = useState(false);
+  const [leaderboardData, setLeaderboardData] = useState([]); //state to update table when user logs
+  const [leaderScore, setScore] = useState([]); //state to update scores
   
   //to keep sending messages 
   useEffect(() => {
@@ -45,7 +48,7 @@ const Main = () => {
       //setThisUser(username);
       setMessage("");
       //console.log("The username is " + username);
-      console.log("The message from this user is " + message);
+      //console.log("The message from this user is " + message);
     } else {
       alert("Type in your message!");
     }
@@ -67,15 +70,15 @@ const Main = () => {
     const boardCopy = [...board];
   	if (winner || boardCopy[i] ) return;
   	
-  	console.log("---------------------");
-  	console.log(username);
-  	console.log(xIsNext);
-  	console.log(player1);
-  	console.log(board);
-  	console.log("---------------------");
+  	//console.log("---------------------");
+  	//console.log(username);
+  	//console.log(xIsNext);
+  	//console.log(player1);
+  	//console.log(board);
+  	//console.log("---------------------");
   	
   	//player 1 
-  	if (xIsNext && player1 == thisUser) {
+  	if (xIsNext && player1 === thisUser) {
   	  //console.log("Does it go here????");
   	  boardCopy[i] = 'X';
   	  setBoard(boardCopy);
@@ -83,19 +86,20 @@ const Main = () => {
   	  socket.emit('board', { squares: boardCopy, isX: xIsNext }); 
   	}
   	//player 2 
-  	else if (!xIsNext && player2 == thisUser){
+  	else if (!xIsNext && player2 === thisUser){
   	  //console.log("How ab here");
   	  boardCopy[i] = 'O';
   	  setBoard(boardCopy);
   	  setXisNext(!xIsNext); 
   	  socket.emit('board', { squares: boardCopy, isX: xIsNext });
   	}
+  
   };
   
   //username of logged users
   const onLoginButton = () => {
     const username = inputRef.current.value;
-    if (username == ""){
+    if (username === ""){
       alert("Please enter your username!");
       return;
     }
@@ -109,69 +113,98 @@ const Main = () => {
     socket.emit('join', { username: username }); //emit the user to server
     document.getElementById("logBtn").disabled = true; //button can be clicked only once
     //document.getElementById("restartBtn").remove();
+    //new event for leaderboard
+    socket.emit('joinBoard',  { username: username });
     }
   };
   
-  //restart button 
+  /*
+  // button
+  var element = document.getElementById('LeaderboardBtn'); // grab a reference to your element
+  if(element){
+    element.addEventListener('click', clickHandler);
+  }
+  
+  var elementIsClicked = false; // declare the variable that tracks the state
+  function clickHandler(){ // declare a function that updates the state
+  console.log('inside handleclick');
+    elementIsClicked = true;
+    //winner_loser();
+  }
+  */
+
+
   const restartButton = () => {
+    //  elementIsClicked = true;
     setBoard(Array(9).fill(null));
     socket.emit('reset', Array(9).fill(null)); //emits an empty board
     document.getElementById("restartBtn");
   }
   
   function thereIsWinner(){
-    if (winner == "X" || winner == "O"){
+    if (winner === "X" || winner === "O"){
       return true;
     }
   }
   
   function thereisNoWinner(){
-    if (winner != "X" || winner != "O"){
+    if (winner !== "X" || winner !== "O"){
       return true;
     }
   }
   
   function thereIsUser(){
-    if (thisUser ==  username[0] || thisUser ==  username[1]) {
-      if(thisUser ==  username[0]){
-        let status = "Winner: " + username[0]; 
+    if (thisUser ===  username[0] || thisUser ===  username[1]) {
+      if(thisUser ===  username[0]){
+        //let status = "Winner: " + username[0]; 
         //console.log("I am player 1");
       }
-      else if (thisUser == username[1]){
-        let status = "Winner: " + username[1];
+      else if (thisUser === username[1]){
+        //let status = "Winner: " + username[1];
       }
       return true;
     }
   }
  
+ //means game ends
   function BoardFull(){
     if (board.every(element => element !== null)) {
+      //socket.emit('game_ends', { username: username }); // and if won/lost/draw
       return true;
     }
   }
 
   function showRestartButton(){
     if ( (thereIsWinner() && thereIsUser() ) || ( thereisNoWinner() && thereIsUser() && BoardFull() ) ){
+      //socket.emit('game_ends');
       return true;
-      console.log("Show the button");
+      //console.log("Show the button");
     }
   }
+
+
   
   
   const LeaderboardBtn = () => {
+    socket.emit('showBoardData');
     setLeadShown((prevShown) => {
-      return !prevShown;
+       return !prevShown;
     });
-    
   }
   
+  const UpdateLeaderboardBtn = () => {
+    winner_loser();
+    socket.emit('showBoardData');
+  }
+  
+
+  
+  
   useEffect(() => {
-    // Listening for an event emitted by the server. If received, we
-    // run the code in the function that is passed in as the second arg
+    
     socket.on('board', (data) => {
-      console.log('Board value event received!');
-      console.log(data);
-      
+      //console.log('Board value event received!');
+      //console.log(data);
       setXisNext(!data.isX);
       setBoard((prevBoard) => [...data.squares]);
     });
@@ -183,19 +216,37 @@ const Main = () => {
     
     
     socket.on('join', (data) => {
-      console.log('User list received!');
-      console.log(data);
+      //console.log('User list received!');
+      //console.log(data);
 
       const lastItem = data[data.length - 1]
       setUsername(prevUsers => [...prevUsers, lastItem]);
     });
+    
+    //sends object key username and value array of names
+    //key score and value array of scores
+    //this prints twice too problem
+    socket.on('user_list', (data) => {
+      console.log('User list received!');
+      console.log(data);
+      
+      setLeaderboardData(data.users); //array of users
+      setScore(data.score); //array of scores
+    });
+    
+   
+    
+    socket.on('showBoardData', (data) => {
+     
+      setLeaderboardData(data.users); //array of users
+      setScore(data.score); //array of scores
+    
+    });
+
 
   }, []);
   
-  
-  //const boardIsFull = board.every(element => element !== null);
-  //console.log(boardIsFull); //true if board is full
-  
+
   return (
     <>
     <div class="full">
@@ -227,10 +278,10 @@ const Main = () => {
             </div></div> ) : (<p class="txt">Can't Show Board. You need to log in first!</p>)}
           
             <div class="centerPlayers">
-            { ( (winner == "X")) ? (
+            { ( (winner === "X")) ? (
             <p>Winner User: {username[0]} </p>) : ("")}
           
-            { ( (winner == "O")) ? (
+            { ( (winner === "O")) ? (
             <p>Winner Username: {username[1]} </p>) : ("")}
             
             { thereisNoWinner() && BoardFull() ? (
@@ -239,8 +290,9 @@ const Main = () => {
             
             { showRestartButton() ? (
             <div class="restartBtnCenter"><button id="restartBtn" class="restartBtn" onClick={()=>restartButton()}>Restart</button></div>
-            ) : ("") }
-          
+            ) : (null) }
+            
+
             <div class="centerPlayers">
               <div class="playerDisplay"><p>Player X: <br /> {username[0]}</p></div>
               <div class="playerDisplay"><p>Player O: <br /> {username[1]}</p></div>
@@ -252,25 +304,35 @@ const Main = () => {
         
         <div class="leaderTable">
         <button class="LeaderboardBtn" id="LeaderboardBtn" onClick={() => {LeaderboardBtn();}}>View Leaderboard</button>
+        <button class="UpdateLeaderboardBtn" id="UpdateLeaderboardBtn" onClick={() => {UpdateLeaderboardBtn();}}>Update Score</button>
+        <p>If you are a winner, please update your score by clicking the button!</p>
         </div>
-        
+      
         {isLeadShown === true ? (
             <div class="leaderTable">
             
             <table>
             <thead>
                 <tr>
-                    <th colspan="2">Leadership Board</th>
+                    <th colSpan="2">Leadership Board</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Username</td>
+                    <td>Username</td> 
                     <td>Score</td>
+                </tr>
+                <tr>
+                    <td>{leaderboardData.map((user, index) => <ListItem key={index} name={user} />)} </td>
+                    <td>{leaderScore.map((newScore, index) => <ListItem key={index} name={newScore} />)} </td>
                 </tr>
             </tbody>
             </table>
-            </div> ) : (<p></p>)}
+            </div> ) : (null)}
+            
+            
+          
+    
       </div>
     </div>
   </>

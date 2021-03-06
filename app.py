@@ -99,6 +99,30 @@ def on_message(msg):
     send(msg, broadcast=True)
     return None
 
+@socketio.on('joinBoard')
+def on_join_board(data):
+    
+    users, scores = DBdata()
+    currentUsername = data['username']
+    
+    if currentUsername in users:
+        print("Welcome back {}".format(currentUsername))
+    else:
+        new_user = models.Users(username=data['username'], score=100)   #{'username': 'name', 'score': 100}
+        db.session.add(new_user)
+        db.session.commit()
+        users.append(currentUsername)
+        socketio.emit('user_list', {'users': users, 'score' : scores})
+
+
+@socketio.on("showBoardData")
+def on_showBoardData():
+    users, scores = DBdata();
+    #print('Users from DB: {}'.format(users))
+    #print('Scores from DB: {}'.format(scores))
+    socketio.emit('showBoardData', {'users': users, 'score': scores})
+ 
+
 def DBdata():
     users = []
     scores = []

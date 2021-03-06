@@ -130,6 +130,7 @@ def on_winner(data):
 
 @socketio.on("showBoardData")
 def on_showBoardData():
+    
     users, scores = DBdata();
     #print('Users from DB: {}'.format(users))
     #print('Scores from DB: {}'.format(scores))
@@ -144,7 +145,11 @@ def on_game_ends():
 def DBdata():
     users = []
     scores = []
-    all_people = models.Users.query.all() 
+    #all_people = models.Users.query.all() 
+    
+    all_people = db.session.query(models.Users).order_by(models.Users.score.desc()).all()
+    db.session.commit()
+    
     for person in all_people:
         users.append(person.username)
         scores.append(person.score)

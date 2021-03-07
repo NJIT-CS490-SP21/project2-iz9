@@ -154,13 +154,34 @@ table,
 td {
     border: 1px solid #333;
     text-align: center;
+    font-family: 'Nunito', sans-serif;
+    margin: 0 auto;
 }
 
 thead,
 tfoot {
-    background-color: #333;
-    color: #fff;
+    background-color: #8d4abe;
+    color: white;
+    font-family: 'Nunito', sans-serif;
 }
 .leaderTable {
     text-align: center;
+}
+
+.LeaderboardBtn, .UpdateLeaderboardBtn{
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: bold;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    background: #8d4abe;
+    border: 1px solid white;
+    border-radius: 10px;
+    width: 90px;
+    height: 35px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin: 30px 30px 0 30px;
+    width: 140px;
+    height: 35px;
 }

@@ -243,13 +243,15 @@ const Main = () => {
   return (
     <>
     <div class="full">
-    
-      <div class="left"> {messages.length > 0 && messages.map(msg => (
+       
+      <div class="left">
+        <h3>Chat App</h3>
+        {messages.length > 0 && messages.map(msg => (
         <div class="msgDiv">
           <p class="msg">{msg}</p>
         </div>
       ))}
-          
+         
       <input class="chatInput" value={message} name="message" onChange={c => onChange(c)} />
       <button class="chatBtn"onClick={() => onSendButton()}>Send</button>
       </div>
@@ -298,7 +300,7 @@ const Main = () => {
         <div class="leaderTable">
         <button class="LeaderboardBtn" id="LeaderboardBtn" onClick={() => {LeaderboardBtn();}}>View Leaderboard</button>
         <button class="UpdateLeaderboardBtn" id="UpdateLeaderboardBtn" onClick={() => {UpdateLeaderboardBtn();}}>Update Score</button>
-        <p>If you are a winner, please update your score by clicking the button!</p>
+        <p>If you are a winner, please update your score by clicking the button when game ends!</p>
         </div>
       
         {isLeadShown === true ? (
@@ -307,7 +309,7 @@ const Main = () => {
             <table>
             <thead>
                 <tr>
-                    <th colSpan="2">Leadership Board</th>
+                    <th colSpan="2">Leaderboard</th>
                 </tr>
             </thead>
             <tbody>

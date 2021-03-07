@@ -85,4 +85,6 @@ Another issue I had was my model created for the table schema was not being read
 1. https://scrimba.com/learn/reactgame/introduction-cPkGD8Sm
 2. https://code-boxx.com/allow-one-click-javascript/
 3. https://www.sitepoint.com/community/t/place-2-divs-alongside-eachother-using-50-width/237385/3
-4. Lecture Notes
+4. https://stackoverflow.com/questions/4186062/sqlalchemy-order-by-descending
+5. Lecture Notes
+6. Slack

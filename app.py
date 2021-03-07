@@ -136,12 +136,6 @@ def on_showBoardData():
     #print('Scores from DB: {}'.format(scores))
     socketio.emit('showBoardData', {'users': users, 'score': scores})
  
-
-@socketio.on("game_ends")
-def on_game_ends():
-    users, scores = DBdata();
-    socketio.emit('game_ends', {'users': users, 'score': scores})
-
 def DBdata():
     users = []
     scores = []

@@ -153,26 +153,26 @@ const Main = () => {
  //means game ends
   function BoardFull(){
     if (board.every(element => element !== null)) {
-      //socket.emit('game_ends', { username: username }); // and if won/lost/draw
       return true;
     }
   }
 
   function showRestartButton(){
     if ( (thereIsWinner() && thereIsUser() ) || ( thereisNoWinner() && thereIsUser() && BoardFull() ) ){
-      //socket.emit('game_ends');
       return true;
       //console.log("Show the button");
     }
   }
   
+  /*
   function ifGameEnds(){
     if (thereIsWinner() || BoardFull() ) {
-      //console.log("inside game ends");
+      console.log("inside game ends");
       socket.emit('game_ends');
     }
   }
   ifGameEnds();
+  */
   
   const LeaderboardBtn = () => {
     socket.emit('showBoardData');
@@ -237,13 +237,7 @@ const Main = () => {
       setScore(data.score); //array of scores
     
     });
-    
-    socket.on('game_ends', (data) => {
-      setLeaderboardData(data.users); //array of users
-      setScore(data.score); //array of scores
-    });
-
-
+   
   }, []);
   
   return (

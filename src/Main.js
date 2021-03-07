@@ -227,7 +227,7 @@ const Main = () => {
     });
    
     socket.on('updateScore', (data) => {
-      console.log(data.score + " SCOREEEEEE");
+      //console.log(data.score + " SCOREEEEEE");
       setLeaderboardData(data.users); //array of users
       setScore(data.score); //array of scores
     });

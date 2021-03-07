@@ -153,6 +153,7 @@ body{
 table,
 td {
     border: 1px solid #333;
+    text-align: center;
 }
 
 thead,
@@ -160,6 +161,6 @@ tfoot {
     background-color: #333;
     color: #fff;
 }
-.leaderTable{
+.leaderTable {
     text-align: center;
 }

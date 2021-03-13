@@ -10,6 +10,10 @@
 6. `sudo yum install postgresql postgresql-server postgresql-devel postgresql-contrib postgresql-docs`
 7. `pip install psycopg2-binary`
 8. `pip install Flask-SQLAlchemy==2.1`
+9. `npm install --save-dev --save-exact prettier`
+10. `pip install yapf`
+11. `npm info "eslint-config-airbnb@latest" peerDependencies`
+12. `pip install pylint`
 
 ## Setup
 

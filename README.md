@@ -96,3 +96,4 @@
 4. https://stackoverflow.com/questions/4186062/sqlalchemy-order-by-descending
 5. Lecture Notes
 6. Slack
+7. https://gist.github.com/sblask/7302860

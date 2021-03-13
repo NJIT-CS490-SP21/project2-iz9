@@ -81,9 +81,7 @@ const Main = () => {
       setBoard(boardCopy);
       setXisNext(!xIsNext);
       socket.emit('board', { squares: boardCopy, isX: xIsNext });
-    }
-    // player 2
-    else if (!xIsNext && player2 === thisUser) {
+    } else if (!xIsNext && player2 === thisUser) {
       // console.log("How ab here");
       boardCopy[i] = 'O';
       setBoard(boardCopy);
@@ -121,12 +119,14 @@ const Main = () => {
     if (winner === 'X' || winner === 'O') {
       return true;
     }
+    return false;
   }
 
   function thereisNoWinner() {
     if (winner !== 'X' || winner !== 'O') {
       return true;
     }
+    return false;
   }
 
   function thereIsUser() {
@@ -139,6 +139,7 @@ const Main = () => {
       }
       return true;
     }
+    return false;
   }
 
   // means game ends
@@ -156,6 +157,7 @@ const Main = () => {
       return true;
       // console.log("Show the button");
     }
+    return false;
   }
 
   /*

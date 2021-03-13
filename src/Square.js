@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Square({ value, onClick }) {
   return (
@@ -7,5 +8,8 @@ function Square({ value, onClick }) {
     </button>
   );
 }
-
+Square.propTypes = {
+  value: PropTypes.string.isRequired,
+  onClick: PropTypes.string.isRequired,
+};
 export default Square;

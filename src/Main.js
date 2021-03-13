@@ -192,11 +192,13 @@ const Main = () => {
       // console.log('Board value event received!');
       // console.log(data);
       setXisNext(!data.isX);
-      setBoard((prevBoard) => [...data.squares]);
+      // setBoard((prevBoard) => [...data.squares]);
+      setBoard([...data.squares]);
     });
 
     socket.on('reset', (data) => {
-      setBoard((prev) => data);
+      // setBoard((prev) => data);
+      setBoard(data);
     });
 
     socket.on('join', (data) => {

@@ -1,6 +1,8 @@
-import React from "react";
-import "./Main.css";
+import React from 'react';
+import './Main.css';
 
-export function ListItem(props) {
+function ListItem(props) {
   return <tr>{props.name}</tr>;
 }
+
+export default ListItem;

@@ -19,7 +19,12 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "react/no-array-index-key": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "react/jsx-filename-extension": "off"
+    }
   },
   "browserslist": {
     "production": [

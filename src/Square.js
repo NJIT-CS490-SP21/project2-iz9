@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
 
-
-function Square ({ value, onClick }) {
+function Square({ value, onClick }) {
   return (
-  <button class="squareBtn" onClick={onClick}>{value}</button>
+    <button class="squareBtn" onClick={onClick}>
+      {value}
+    </button>
   );
 }
 

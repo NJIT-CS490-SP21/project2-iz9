@@ -1,191 +1,192 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap");
 
-p{
-    font-family: 'Noto Sans JP', sans-serif;
+p {
+  font-family: "Noto Sans JP", sans-serif;
 }
-input{
-    /*font-family: 'Noto Sans JP', sans-serif;*/
-    line-height: 30px;
-    background: #fafafa;
-    -webkit-box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
-    -moz-box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
-    box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding: 0 10px;
-    font-size: 1em;
-    color: #666;
-    -webkit-transition: all 0.4s ease;
-    -o-transition: all 0.4s ease;
-    -moz-transition: all 0.4s ease;
-    transition: all 0.4s ease;
-    width: 170px;
+input {
+  /*font-family: 'Noto Sans JP', sans-serif;*/
+  line-height: 30px;
+  background: #fafafa;
+  -webkit-box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
+  -moz-box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 0 10px;
+  font-size: 1em;
+  color: #666;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  width: 170px;
 }
-h1{
-    text-align: center;
-    font-size: 50px;
-    font-family: 'Roboto', sans-serif;
+h1 {
+  text-align: center;
+  font-size: 50px;
+  font-family: "Roboto", sans-serif;
 }
-body{
-    margin: 30px;
-    background-image: url("https://htmlcolors.com/gradients-images/53-light-purple-gradient.jpg");
+body {
+  margin: 30px;
+  background-image: url("https://htmlcolors.com/gradients-images/53-light-purple-gradient.jpg");
 }
-.centerInput{
-    text-align: center;
+.centerInput {
+  text-align: center;
 }
 
-.logBtn, .restartBtn{
-    color: #fff;
-    font-size: 1em;
-    font-weight: bold;
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    background: #8d4abe;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 90px;
-    height: 35px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin: 30px 30px 0 30px;
+.logBtn,
+.restartBtn {
+  color: #fff;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+  background: #8d4abe;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 90px;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin: 30px 30px 0 30px;
 }
-.restartBtnCenter{
-    text-align:center;
+.restartBtnCenter {
+  text-align: center;
 }
-.logBtn:hover{
+.logBtn:hover {
   background: #b67edf;
 }
-.playerStyle{
-    text-align: center;
-    font-size: 20px;
-    margin-top: 20px;
+.playerStyle {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
 }
-.playerDisplay{
-    display: inline-block;
-    text-align: center;
-    margin: 0 50px 0 50px;
- 
+.playerDisplay {
+  display: inline-block;
+  text-align: center;
+  margin: 0 50px 0 50px;
 }
 
-.playerDisplay p{
-    text-align:center;
-    font-size: 18px;
+.playerDisplay p {
+  text-align: center;
+  font-size: 18px;
 }
-.centerPlayers{
-    text-align:center;
+.centerPlayers {
+  text-align: center;
 }
-.centerPlayers p{
-    font-size: 16px;
+.centerPlayers p {
+  font-size: 16px;
 }
 /*Square Style*/
-.squareBtn{
-    background: #eadbff;
-    border: 4px solid #8d4abe;
-    cursor: pointer;
-    outline: none;
-    font-size: 35px;
+.squareBtn {
+  background: #eadbff;
+  border: 4px solid #8d4abe;
+  cursor: pointer;
+  outline: none;
+  font-size: 35px;
 }
 
-.squareBtn:hover{
- background: #b67edf;
+.squareBtn:hover {
+  background: #b67edf;
 }
-.txt{
-    text-align:center;
+.txt {
+  text-align: center;
 }
 
 /*Board Style*/
-.boardStyle{
-    border-radius: 10px;
-    width: 280px;
-    height: 280px;
-    margin: 0 auto;
-    display: grid;
-    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    margin-top:30px;
+.boardStyle {
+  border-radius: 10px;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  margin-top: 30px;
 }
 
 /*Chat Style*/
 h3 {
-    font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
-.sideBySide{
-    display: inline-block;
-    margin: 0 50px 0 50px;
-    width:50%;
+.sideBySide {
+  display: inline-block;
+  margin: 0 50px 0 50px;
+  width: 50%;
 }
 .full {
-  display:table;
+  display: table;
   width: 100%;
 }
-.left, .right {
+.left,
+.right {
   display: table-cell;
 }
-.left{
-    background: white;
-    text-align:center;
-    width:30%;
-    height: 500px;
-    border-radius: 25px;
+.left {
+  background: white;
+  text-align: center;
+  width: 30%;
+  height: 500px;
+  border-radius: 25px;
 }
-.right{
-    width:70%;
+.right {
+  width: 70%;
 }
-.chatBtn{
-    color: white;
-    font-size: 1em;
-    font-weight: bold;
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    background: #8d4abe;
-    border: 1px solid black;
-    border-radius: 10px;
-    height: 35px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin: 0px 0px 0 30px;
+.chatBtn {
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+  background: #8d4abe;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin: 0px 0px 0 30px;
 }
-.msg{
-	background: lightblue;
-	border-radius: 25px;
- 
+.msg {
+  background: lightblue;
+  border-radius: 25px;
 }
 
 /*Leaderboard Styles*/
 table,
 td {
-    border: 1px solid #333;
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    margin: 0 auto;
-    width: 30%;
+  border: 1px solid #333;
+  text-align: center;
+  font-family: "Nunito", sans-serif;
+  margin: 0 auto;
+  width: 30%;
 }
 
 thead,
 tfoot {
-    background-color: #8d4abe;
-    color: white;
-    font-family: 'Nunito', sans-serif;
+  background-color: #8d4abe;
+  color: white;
+  font-family: "Nunito", sans-serif;
 }
 .leaderTable {
-    text-align: center;
+  text-align: center;
 }
 
-.LeaderboardBtn, .UpdateLeaderboardBtn{
-    color: #fff;
-    font-size: 0.9em;
-    font-weight: bold;
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    background: #8d4abe;
-    border: 1px solid white;
-    border-radius: 10px;
-    width: 90px;
-    height: 35px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    margin: 30px 30px 0 30px;
-    width: 140px;
-    height: 35px;
+.LeaderboardBtn,
+.UpdateLeaderboardBtn {
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: bold;
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+  background: #8d4abe;
+  border: 1px solid white;
+  border-radius: 10px;
+  width: 90px;
+  height: 35px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin: 30px 30px 0 30px;
+  width: 140px;
+  height: 35px;
 }

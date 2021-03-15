@@ -49,6 +49,7 @@ def on_connect():
     #print(users)
     #socketio.emit('user_list', {'users': users})
 
+
 @SOCKETIO.on('disconnect')
 def on_disconnect():
     '''when server spots a user disconnection'''
@@ -117,10 +118,29 @@ def on_join_board(data):
         SOCKETIO.emit('user_list', {'users': users, 'score': scores})
 
 
+def add_user(username):
+    '''for unit testing: adding a username to database'''
+    # current_username = username
+    new_user = models.Users(username=username, score=100)
+    DB.session.add(new_user)
+    DB.session.commit()
+    all_people = models.Users.query.all()
+    users = []
+    for person in all_people:
+        users.append(person.username)
+    return users
+
+
+def user_append(username):
+    '''for unit testing: add a username to a list'''
+    users = []
+    users.append(username)
+    return users
+
+
 @SOCKETIO.on("updateScore")
 def on_winner(data):
     '''when server listens to updateScore event from client'''
-
     winner = DB.session.query(models.Users).get(data['winner'])
     winner.score = winner.score + 1
     DB.session.commit()
@@ -131,6 +151,29 @@ def on_winner(data):
 
     users, scores = db_data()
     SOCKETIO.emit('updateScore', {'users': users, 'score': scores})
+
+
+# { winner: player1, loser: player2 }
+def mock_on_winner(winner, loser):
+    '''for unit testing: mocking the winner and loser score'''
+    winner = DB.session.query(models.Users).get(winner)
+    winner.score = winner.score + 1
+    DB.session.commit()
+
+    loser = DB.session.query(models.Users).get(loser)
+    loser.score = loser.score - 1
+    DB.session.commit()
+    return [winner.score, loser.score]
+
+
+def unmock_winner_loser(score):
+    '''for unit testing: testing the winner and loser score increase/decrease'''
+    winner = score[0]
+    loser = score[1]
+    winner = winner + 1
+    loser = loser - 1
+    new_score = [winner, loser]
+    return new_score
 
 
 @SOCKETIO.on("showBoardData")
@@ -152,11 +195,18 @@ def db_data():
     all_people = DB.session.query(models.Users).order_by(
         models.Users.score.desc()).all()
     DB.session.commit()
-
+    print(all_people)  # [<User 'y'>, <User 'hi'>, <User 'hello'>..]
     for person in all_people:
         users.append(person.username)
         scores.append(person.score)
     return users, scores
+
+
+def mock_order_by(score_arg):
+    '''for unit testing: mocking order_by'''
+    score_arg = models.Users.score.desc()
+    print(score_arg)  #users.score DESC
+    all_people = DB.session.query(models.Users).order_by(score_arg).all()
 
 
 if __name__ == "__main__":

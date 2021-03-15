@@ -7,7 +7,12 @@ function Board({ squares, onClick }) {
   return (
     <div className="boardStyle">
       {squares.map((square, i) => (
-        <Square key={i} value={square} onClick={() => onClick(i)} />
+        <Square
+          data-testid={`square_${i}`} // Add testid
+          key={i}
+          value={square}
+          onClick={() => onClick(i)}
+        />
       ))}
     </div>
   );

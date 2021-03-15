@@ -44,7 +44,9 @@ const Main = () => {
       // console.log("The username is " + username);
       // console.log("The message from this user is " + message);
     } else {
-      alert('Type in your message!');
+      /* eslint no-undef: "error" */
+      /* eslint-env browser */
+      alert('Type in your message!'); // eslint-disable-line no-alert
     }
   };
 
@@ -92,9 +94,9 @@ const Main = () => {
 
   // username of logged users
   const onLoginButton = () => {
-    const username = inputRef.current.value;
+    const username = inputRef.current.value; // eslint-disable-line no-shadow
     if (username === '') {
-      alert('Please enter your username!');
+      alert('Please enter your username!'); // eslint-disable-line no-alert
     } else if (username != null) {
       setShown((prevShown) => !prevShown);
 
@@ -211,8 +213,8 @@ const Main = () => {
     // sends object key username and value array of names
     // key score and value array of scores
     socket.on('user_list', (data) => {
-      console.log('User list received!');
-      console.log(data);
+      // console.log('User list received!');
+      // console.log(data);
 
       setLeaderboardData(data.users); // array of users
       setScore(data.score); // array of scores
@@ -236,11 +238,11 @@ const Main = () => {
         <div className="left">
           <h3>Chat App</h3>
           {messages.length > 0
-          && messages.map((msg) => (
-            <div className="msgDiv">
-              <p className="msg">{msg}</p>
-            </div>
-          ))}
+            && messages.map((msg) => (
+              <div className="msgDiv">
+                <p className="msg">{msg}</p>
+              </div>
+            ))}
 
           <input
             className="chatInput"
